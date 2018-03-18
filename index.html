@@ -55,15 +55,32 @@ function showResult(str) {
             var chi_block = "";
             var chi_lot = "";
             var chi_village = "";
-            
+            var street_name = "";
+            var building_no_from = "";
+            var building_no_to = "";
+            var building_no = "";
+
             if (chiAddressNode.getElementsByTagName("Region")[0]!=null)
                 region = chiAddressNode.getElementsByTagName("Region")[0].textContent;
             
             if (chiAddressNode.getElementsByTagName("ChiDistrict")[0]!=null)
                 chi_district = chiAddressNode.getElementsByTagName("ChiDistrict")[0].textContent;
             
-            if (chiAddressNode.getElementsByTagName("ChiStreet")[0]!=null)
-                chi_street = chiAddressNode.getElementsByTagName("ChiStreet")[0].textContent;
+            if (chiAddressNode.getElementsByTagName("ChiStreet")[0]!=null) {
+                var chiStreetNode = chiAddressNode.getElementsByTagName("ChiStreet")[0];
+
+                if (chiStreetNode.getElementsByTagName("StreetName")[0]!=null)
+                    street_name = chiStreetNode.getElementsByTagName("StreetName")[0].textContent;
+
+                if (chiStreetNode.getElementsByTagName("BuildingNoFrom")[0]!=null)
+                    building_no_from = chiStreetNode.getElementsByTagName("BuildingNoFrom")[0].textContent;
+
+                if (chiStreetNode.getElementsByTagName("BuildingNoTo")[0]!=null)
+                    building_no_to = "/" + chiStreetNode.getElementsByTagName("BuildingNoTo")[0].textContent;
+
+                chi_street = street_name;
+                building_no = building_no_from + building_no_to;                
+            }
 
             if (chiAddressNode.getElementsByTagName("ChiLot")[0]!=null)
                 chi_lot = chiAddressNode.getElementsByTagName("ChiLot")[0].textContent;
@@ -91,17 +108,17 @@ function showResult(str) {
             console.log("Combined: " + region + chi_district + chi_street + chi_lot + chi_village + building_name + chi_estate + chi_block);
     //        console.log(street_name);
     //        console.log(building_no_from);   
-            chiAddress = chiAddress + "<a href=\"https://docs.google.com/forms/d/e/1FAIpQLSd670j1iJ_ue3aFnuwV104rbwdyeI8_ghCcTNyBtPYvncCMxw/viewform?usp=pp_url&entry.2005620554=" + region + "&entry.1045781291=" + chi_district + "&entry.1065046570=" + chi_street + "&entry.1166974658=" + chi_lot + "&entry.1659098009=" + chi_village + "&entry.735433851=" + building_name + "&entry.1008578176=" + chi_estate + "&entry.1452479057=" + chi_block + "&entry.667072325=&entry.1065003746=&entry.1545250047=" + latitude + "&entry.343700461=" + longitude + "\">" + chiAddressNode.textContent + "</a><br>"; 
+            chiAddress = chiAddress + "<a href=\"https://docs.google.com/forms/d/e/1FAIpQLSd670j1iJ_ue3aFnuwV104rbwdyeI8_ghCcTNyBtPYvncCMxw/viewform?usp=pp_url&entry.2005620554=" + region + "&entry.1045781291=" + chi_district + "&entry.1065046570=" + chi_street + "&entry.606063279=" + building_no + "&entry.1166974658=" + chi_lot + "&entry.1659098009=" + chi_village + "&entry.735433851=" + building_name + "&entry.1008578176=" + chi_estate + "&entry.1452479057=" + chi_block + "&entry.667072325=&entry.1065003746=&entry.1545250047=" + latitude + "&entry.343700461=" + longitude + "\">" + chiAddressNode.textContent + "</a><br>"; 
         }  
     }
 
     console.log("chiAddress: " + chiAddress);    
-//    document.getElementById("livesearch").innerHTML=chiAddress;
-    document.getElementById("livesearch").innerHTML="hello";
+    document.getElementById("livesearch").innerHTML = chiAddress;
+//    document.getElementById("livesearch").innerHTML="hello";
     document.getElementById("livesearch").style.border="1px solid #A5ACB2";
     }
   }
-  xmlhttp.open("GET",""+str,true);
+  xmlhttp.open("GET","https://www.als.ogcio.gov.hk/lookup?q="+str,true);
   xmlhttp.setRequestHeader("Accept", "application/xml");
   xmlhttp.setRequestHeader("Accept-Language", "en,zh-Hant");
   xmlhttp.send();

@@ -19,9 +19,10 @@ function showResult(str) {
   xmlhttp.onreadystatechange=function() {
     if (this.readyState==4 && this.status==200) {
 
+    console.log("responseText" + this.responseText);
     var parser = new DOMParser();
     var xmlDoc = parser.parseFromString(this.responseText,"text/xml");
-
+    console.log("xmlDoc: " + xmlDoc);
     // loop over <document> nodes
     
     var addressNodes = xmlDoc.getElementsByTagName("PremisesAddress"); 
@@ -42,63 +43,67 @@ function showResult(str) {
         var engAddressNode = addressNodes[i].getElementsByTagName("EngPremisesAddress")[0];
         var geospatialInformationNode = addressNodes[i].getElementsByTagName("GeospatialInformation")[0];
 
-        console.log(chiAddressNode);
-        console.log("text Content: " + chiAddressNode.textContent);
+        if (chiAddressNode != null) {
+            console.log(chiAddressNode);
+            console.log("text Content: " + chiAddressNode.textContent);
         
-        var region = "";
-        var chi_district = "";
-        var chi_street = "";
-        var building_name = "";
-        var chi_estate = "";
-        var chi_block = "";
-        var chi_lot = "";
-        var chi_village = "";
-        
-        if (chiAddressNode.getElementsByTagName("Region")[0]!=null)
-            region = chiAddressNode.getElementsByTagName("Region")[0].textContent;
-        
-        if (chiAddressNode.getElementsByTagName("ChiDistrict")[0]!=null)
-            chi_district = chiAddressNode.getElementsByTagName("ChiDistrict")[0].textContent;
-        
-        if (chiAddressNode.getElementsByTagName("ChiStreet")[0]!=null)
-            chi_street = chiAddressNode.getElementsByTagName("ChiStreet")[0].textContent;
+            var region = "";
+            var chi_district = "";
+            var chi_street = "";
+            var building_name = "";
+            var chi_estate = "";
+            var chi_block = "";
+            var chi_lot = "";
+            var chi_village = "";
+            
+            if (chiAddressNode.getElementsByTagName("Region")[0]!=null)
+                region = chiAddressNode.getElementsByTagName("Region")[0].textContent;
+            
+            if (chiAddressNode.getElementsByTagName("ChiDistrict")[0]!=null)
+                chi_district = chiAddressNode.getElementsByTagName("ChiDistrict")[0].textContent;
+            
+            if (chiAddressNode.getElementsByTagName("ChiStreet")[0]!=null)
+                chi_street = chiAddressNode.getElementsByTagName("ChiStreet")[0].textContent;
 
-        if (chiAddressNode.getElementsByTagName("ChiLot")[0]!=null)
-            chi_lot = chiAddressNode.getElementsByTagName("ChiLot")[0].textContent;
+            if (chiAddressNode.getElementsByTagName("ChiLot")[0]!=null)
+                chi_lot = chiAddressNode.getElementsByTagName("ChiLot")[0].textContent;
 
-        if (chiAddressNode.getElementsByTagName("ChiVillage")[0]!=null)
-            chi_village = chiAddressNode.getElementsByTagName("ChiVillage")[0].textContent;
-        
-        if (chiAddressNode.getElementsByTagName("BuildingName")[0]!=null)
-            building_name = chiAddressNode.getElementsByTagName("BuildingName")[0].textContent;
+            if (chiAddressNode.getElementsByTagName("ChiVillage")[0]!=null)
+                chi_village = chiAddressNode.getElementsByTagName("ChiVillage")[0].textContent;
+            
+            if (chiAddressNode.getElementsByTagName("BuildingName")[0]!=null)
+                building_name = chiAddressNode.getElementsByTagName("BuildingName")[0].textContent;
 
-        if (chiAddressNode.getElementsByTagName("ChiEstate")[0]!=null)
-            chi_estate = chiAddressNode.getElementsByTagName("ChiEstate")[0].textContent;
+            if (chiAddressNode.getElementsByTagName("ChiEstate")[0]!=null)
+                chi_estate = chiAddressNode.getElementsByTagName("ChiEstate")[0].textContent;
 
-        if (chiAddressNode.getElementsByTagName("Block_No")[0]!=null)
-            chi_block = chiAddressNode.getElementsByTagName("Block_No")[0].textContent;
+            if (chiAddressNode.getElementsByTagName("Block_No")[0]!=null)
+                chi_block = chiAddressNode.getElementsByTagName("Block_No")[0].textContent;
 
-        var latitude = "";
-        if (geospatialInformationNode.getElementsByTagName("Latitude")[0]!=null)
-            latitude = geospatialInformationNode.getElementsByTagName("Latitude")[0].textContent;
+            var latitude = "";
+            if (geospatialInformationNode.getElementsByTagName("Latitude")[0]!=null)
+                latitude = geospatialInformationNode.getElementsByTagName("Latitude")[0].textContent;
 
-        var longitude = "";
-        if (geospatialInformationNode.getElementsByTagName("Longitude")[0]!=null)
-            longitude = geospatialInformationNode.getElementsByTagName("Longitude")[0].textContent;
+            var longitude = "";
+            if (geospatialInformationNode.getElementsByTagName("Longitude")[0]!=null)
+                longitude = geospatialInformationNode.getElementsByTagName("Longitude")[0].textContent;
 
-        console.log("Combined: " + region + chi_district + chi_street + chi_lot + chi_village + building_name + chi_estate + chi_block);
-//        console.log(street_name);
-//        console.log(building_no_from);   
-        chiAddress = chiAddress + "<a href=\"https://docs.google.com/forms/d/e/1FAIpQLSd670j1iJ_ue3aFnuwV104rbwdyeI8_ghCcTNyBtPYvncCMxw/viewform?usp=pp_url&entry.2005620554=" + region + "&entry.1045781291=" + chi_district + "&entry.1065046570=" + chi_street + "&entry.1166974658=" + chi_lot + "&entry.1659098009=" + chi_village + "&entry.735433851=" + building_name + "&entry.1008578176=" + chi_estate + "&entry.1452479057=" + chi_block + "&entry.667072325=&entry.1065003746=&entry.1545250047=" + latitude + "&entry.343700461=" + longitude + "\">" + chiAddressNode.textContent + "</a><br>"; 
-    }  
+            console.log("Combined: " + region + chi_district + chi_street + chi_lot + chi_village + building_name + chi_estate + chi_block);
+    //        console.log(street_name);
+    //        console.log(building_no_from);   
+            chiAddress = chiAddress + "<a href=\"https://docs.google.com/forms/d/e/1FAIpQLSd670j1iJ_ue3aFnuwV104rbwdyeI8_ghCcTNyBtPYvncCMxw/viewform?usp=pp_url&entry.2005620554=" + region + "&entry.1045781291=" + chi_district + "&entry.1065046570=" + chi_street + "&entry.1166974658=" + chi_lot + "&entry.1659098009=" + chi_village + "&entry.735433851=" + building_name + "&entry.1008578176=" + chi_estate + "&entry.1452479057=" + chi_block + "&entry.667072325=&entry.1065003746=&entry.1545250047=" + latitude + "&entry.343700461=" + longitude + "\">" + chiAddressNode.textContent + "</a><br>"; 
+        }  
+    }
 
-//    console.log(chiAddress);
-    
-    document.getElementById("livesearch").innerHTML=chiAddress;
-//    document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+    console.log("chiAddress: " + chiAddress);    
+//    document.getElementById("livesearch").innerHTML=chiAddress;
+    document.getElementById("livesearch").innerHTML="hello";
+    document.getElementById("livesearch").style.border="1px solid #A5ACB2";
     }
   }
-  xmlhttp.open("GET","https://www.als.ogcio.gov.hk/lookup?q="+str,true);
+  xmlhttp.open("GET",""+str,true);
+  xmlhttp.setRequestHeader("Accept", "application/xml");
+  xmlhttp.setRequestHeader("Accept-Language", "en,zh-Hant");
   xmlhttp.send();
 }
 
@@ -107,7 +112,7 @@ function showResult(str) {
 <body>
 
 <form action="https://docs.google.com/forms/d/e/1FAIpQLScRB0UoSc_dpH3bDnXKHAFoatnLO0vRQ7x0ldODTnigxpnWEg/viewform?usp=pp_url&entry.2005620554&entry.1045781291&entry.1065046570&entry.1166974658&entry.839337160">
-<input type="text" id="inputform" size="100" width="80%" height ="20" onkeyup="showResult(this.value)">
+<input type="text" id="inputform" size="30" width="80%" height ="20" onkeyup="showResult(this.value)">
 <div id="livesearch"></div>
 </form>
 

@@ -83,7 +83,7 @@ function showResult(str) {
             var building_no_from = "";
             var building_no_to = "";
             var building_no = "";
-            var building_no_desc;
+            var building_no_desc ="";
             var chi_block_desc = "";
             var chi_district_name = "";
 
@@ -138,7 +138,7 @@ function showResult(str) {
             if (geospatialInformationNode.getElementsByTagName("Longitude")[0]!=null)
                 longitude = geospatialInformationNode.getElementsByTagName("Longitude")[0].textContent;
 
-            var chi_full_address = region + chi_district_name + chi_street + building_no_desc + chi_lot + chi_village + building_name + chi_estate + chi_block + chi_block_desc;
+            var chi_full_address = region + chi_district_name + chi_street + building_no_desc + chi_estate + chi_lot + chi_village + building_name + chi_block + chi_block_desc;
             console.log("Combined: " + chi_full_address);   
 
             chiAddress = chiAddress + "<a href=\"https://docs.google.com/forms/d/e/1FAIpQLSd670j1iJ_ue3aFnuwV104rbwdyeI8_ghCcTNyBtPYvncCMxw/viewform?usp=pp_url&entry.2005620554=" + region + "&entry.1045781291=" + chi_district_name + "&entry.1065046570=" + chi_street + "&entry.606063279=" + building_no + "&entry.1166974658=" + chi_lot + "&entry.1659098009=" + chi_village + "&entry.735433851=" + building_name + "&entry.1008578176=" + chi_estate + "&entry.1452479057=" + chi_block + "&entry.667072325=&entry.1065003746=&entry.1545250047=" + latitude + "&entry.343700461=" + longitude + "\">" + chi_full_address + "</a><br>"; 

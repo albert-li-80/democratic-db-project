@@ -25,6 +25,29 @@ function districtCodetoName(str) {
     else return str;
 }
 
+function districtCodetoEngName(str) {
+    if (str.length==0) return null;
+    else if (str=="CW") return "CENTRAL DISTRICT";
+    else if (str=="EST") return "EASTERN DISTRICT";
+    else if (str=="ILD") return "ISLAND DISTRICT";
+    else if (str=="KLC") return "KOLWOON CITY DISTRICT";
+    else if (str=="KC") return "KWAI TSING DISTRICT";
+    else if (str=="KT") return "KWUN TONG DISTRICT";
+    else if (str=="NTH") return "NORTHERN DISTRICT";
+    else if (str=="SK") return "SAI KUNG DISTRICT";
+    else if (str=="ST") return "SHA TIN DISTRICT";
+    else if (str=="SSP") return "SHAM SHUI PO DISTRICT";
+    else if (str=="STH") return "SOUTHERN DISTRICT";
+    else if (str=="TP") return "TAI PO DISTRICT";
+    else if (str=="TW") return "TSUEN WAN DISTRICT";
+    else if (str=="TM") return "TUEN MUN DISTRICT";
+    else if (str=="WC") return "WAN CHAI DISTRICT";
+    else if (str=="WTS") return "WONG TAI SIN DISTRICT";
+    else if (str=="YTM") return "YAU TSIM MONG DISTRICT";
+    else if (str=="YL") return "YUEN LONG DISTRICT";
+    else return str;
+}
+
 function showResult(str) {
   
   if (str.length==0) { 
@@ -66,6 +89,87 @@ function showResult(str) {
         var chiAddressNode = addressNodes[i].getElementsByTagName("ChiPremisesAddress")[0]; 
         var engAddressNode = addressNodes[i].getElementsByTagName("EngPremisesAddress")[0];
         var geospatialInformationNode = addressNodes[i].getElementsByTagName("GeospatialInformation")[0];
+        
+        var eng_full_address = "";
+        var chi_full_address = "";
+        var latitude = "";
+        var longitude = "";
+
+        if (geospatialInformationNode != null) {
+
+            if (geospatialInformationNode.getElementsByTagName("Latitude")[0]!=null)
+                latitude = geospatialInformationNode.getElementsByTagName("Latitude")[0].textContent;
+
+            if (geospatialInformationNode.getElementsByTagName("Longitude")[0]!=null)
+                longitude = geospatialInformationNode.getElementsByTagName("Longitude")[0].textContent;
+        }
+
+        if (engAddressNode != null) {
+            console.log(engAddressNode);
+            console.log("eng text Content: " + engAddressNode.textContent);
+        
+            var region = "";
+            var eng_district = "";
+            var eng_street = "";
+            var building_name = "";
+            var eng_estate = "";
+            var eng_block = "";
+            var eng_lot = "";
+            var eng_village = "";
+            var eng_street_name = "";
+            var building_no_from = "";
+            var building_no_to = "";
+            var building_no = "";
+            var building_no_desc ="";
+            var eng_block_desc = "";
+            var eng_district_name = "";
+    
+            if (engAddressNode.getElementsByTagName("Region")[0]!=null)
+                region = engAddressNode.getElementsByTagName("Region")[0].textContent;
+            
+            if (engAddressNode.getElementsByTagName("EngDistrict")[0]!=null) {
+                eng_district = engAddressNode.getElementsByTagName("EngDistrict")[0].textContent;
+                eng_district_name = districtCodetoEngName(eng_district) + " ";
+            }
+            
+            if (engAddressNode.getElementsByTagName("EngStreet")[0]!=null) {
+                var engStreetNode = engAddressNode.getElementsByTagName("EngStreet")[0];
+
+                if (engStreetNode.getElementsByTagName("StreetName")[0]!=null)
+                    eng_street_name = engStreetNode.getElementsByTagName("StreetName")[0].textContent;
+
+                if (engStreetNode.getElementsByTagName("BuildingNoFrom")[0]!=null)
+                    building_no_from = engStreetNode.getElementsByTagName("BuildingNoFrom")[0].textContent;
+
+                if (engStreetNode.getElementsByTagName("BuildingNoTo")[0]!=null)
+                    building_no_to = "-" + engStreetNode.getElementsByTagName("BuildingNoTo")[0].textContent;
+
+                eng_street = eng_street_name + " ";
+                building_no = building_no_from + building_no_to;
+                if (building_no != null) building_no_desc = "NO. " + building_no + " ";                
+            }
+
+            if (engAddressNode.getElementsByTagName("EngLot")[0]!=null)
+                eng_lot = engAddressNode.getElementsByTagName("EngLot")[0].textContent + " ";
+
+            if (engAddressNode.getElementsByTagName("EngVillage")[0]!=null)
+                eng_village = engAddressNode.getElementsByTagName("EngVillage")[0].textContent + " "; 
+            
+            if (engAddressNode.getElementsByTagName("BuildingName")[0]!=null)
+                building_name = engAddressNode.getElementsByTagName("BuildingName")[0].textContent + " ";
+
+            if (engAddressNode.getElementsByTagName("EngEstate")[0]!=null)
+                eng_estate = engAddressNode.getElementsByTagName("EngEstate")[0].textContent + " ";
+
+            if (engAddressNode.getElementsByTagName("BlockNo")[0]!=null)
+                eng_block = engAddressNode.getElementsByTagName("BlockNo")[0].textContent + " ";
+
+            if (engAddressNode.getElementsByTagName("BlockDescriptor")[0]!=null)
+                eng_block_desc = engAddressNode.getElementsByTagName("BlockDescriptor")[0].textContent + " ";
+
+            eng_full_address = eng_block_desc + eng_block + building_name + eng_village + eng_lot + eng_estate + building_no_desc + eng_street + eng_district_name + region;
+            console.log("Combined: " + eng_full_address);   
+        }
 
         if (chiAddressNode != null) {
             console.log(chiAddressNode);
@@ -86,7 +190,7 @@ function showResult(str) {
             var building_no_desc ="";
             var chi_block_desc = "";
             var chi_district_name = "";
-
+    
             if (chiAddressNode.getElementsByTagName("Region")[0]!=null)
                 region = chiAddressNode.getElementsByTagName("Region")[0].textContent;
             
@@ -130,24 +234,15 @@ function showResult(str) {
             if (chiAddressNode.getElementsByTagName("BlockDescriptor")[0]!=null)
                 chi_block_desc = chiAddressNode.getElementsByTagName("BlockDescriptor")[0].textContent;
 
-            var latitude = "";
-            if (geospatialInformationNode.getElementsByTagName("Latitude")[0]!=null)
-                latitude = geospatialInformationNode.getElementsByTagName("Latitude")[0].textContent;
-
-            var longitude = "";
-            if (geospatialInformationNode.getElementsByTagName("Longitude")[0]!=null)
-                longitude = geospatialInformationNode.getElementsByTagName("Longitude")[0].textContent;
-
-            var chi_full_address = region + chi_district_name + chi_street + building_no_desc + chi_estate + chi_lot + chi_village + building_name + chi_block + chi_block_desc;
+            chi_full_address = region + chi_district_name + chi_street + building_no_desc + chi_estate + chi_lot + chi_village + building_name + chi_block + chi_block_desc;
             console.log("Combined: " + chi_full_address);   
 
-            chiAddress = chiAddress + "<a href=\"https://docs.google.com/forms/d/e/1FAIpQLSd670j1iJ_ue3aFnuwV104rbwdyeI8_ghCcTNyBtPYvncCMxw/viewform?usp=pp_url&entry.2005620554=" + region + "&entry.1045781291=" + chi_district_name + "&entry.1065046570=" + chi_street + "&entry.606063279=" + building_no + "&entry.1166974658=" + chi_lot + "&entry.1659098009=" + chi_village + "&entry.735433851=" + building_name + "&entry.1008578176=" + chi_estate + "&entry.1452479057=" + chi_block + "&entry.667072325=&entry.1065003746=&entry.1545250047=" + latitude + "&entry.343700461=" + longitude + "\">" + chi_full_address + "</a><br>"; 
+            chiAddress = chiAddress + "<a href=\"https://docs.google.com/forms/d/e/1FAIpQLSd670j1iJ_ue3aFnuwV104rbwdyeI8_ghCcTNyBtPYvncCMxw/viewform?usp=pp_url&entry.2005620554=" + region + "&entry.1045781291=" + chi_district_name + "&entry.1065046570=" + chi_street + "&entry.606063279=" + building_no + "&entry.1166974658=" + chi_lot + "&entry.1659098009=" + chi_village + "&entry.735433851=" + building_name + "&entry.1008578176=" + chi_estate + "&entry.1452479057=" + chi_block + "&entry.667072325=&entry.1065003746=&entry.1545250047=" + latitude + "&entry.343700461=" + longitude + "\">" + chi_full_address + " \/ " + eng_full_address + "</a><br>"; 
         }  
     }
 
     console.log("chiAddress: " + chiAddress);    
     document.getElementById("livesearch").innerHTML = chiAddress;
-//    document.getElementById("livesearch").innerHTML="hello";
     document.getElementById("livesearch").style.border="1px solid #A5ACB2";
     }
   }
